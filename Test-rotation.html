@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRYaTECH Quote Rotation Test</title>
+  <style>
+    body {
+      background: #000;
+      color: #0cf;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    #dailyMessage {
+      font-size: 1.8rem;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>TRYaTECH Daily Motivation</h1>
+  <div id="dailyMessage">Loading...</div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyADI...yourKey",
+      authDomain: "tryatech-aaeb5.firebaseapp.com",
+      projectId: "tryatech-aaeb5",
+      storageBucket: "tryatech-aaeb5.appspot.com",
+      messagingSenderId: "590512524765",
+      appId: "1:590512524765:web:e8e419daaec73d4e9ef34f",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const quoteBox = document.getElementById("dailyMessage");
+      let quotes = [];
+      let quoteIndex = 0;
+
+      console.log("Quote box loaded:", quoteBox);
+
+      function updateQuote() {
+        if (quotes.length === 0) {
+          console.log("No quotes yet.");
+          return;
+        }
+        quoteBox.textContent = quotes[quoteIndex];
+        console.log("Showing quote:", quotes[quoteIndex]);
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+      }
+
+      db.collection("Motivation").onSnapshot((snapshot) => {
+        quotes = snapshot.docs.map(doc => doc.data().quote);
+        console.log("Quotes loaded from Firestore:", quotes);
+
+        if (quotes.length > 0) {
+          updateQuote();
+          setInterval(updateQuote, 5000);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
