@@ -383,10 +383,9 @@ showNextMessage(); // Show first message right away
    <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"><
-
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyADI...YDCcWqXggw", // Your actual key
+    apiKey: "AIzaSyADI...YDCcWqXggw",
     authDomain: "tryatech-aaeb5.firebaseapp.com",
     projectId: "tryatech-aaeb5",
     storageBucket: "tryatech-aaeb5.appspot.com",
@@ -410,21 +409,19 @@ showNextMessage(); // Show first message right away
     }
 
     db.collection("motivationQuotes").onSnapshot(snapshot => {
-  quotes = snapshot.docs.map(doc => doc.data().text);
+      quotes = snapshot.docs.map(doc => doc.data().text);
 
-  // Show result on screen for debug
-  if (quotes.length === 0) {
-    document.getElementById("dailyMessage").textContent = "No quotes found or access blocked.";
-  } else {
-    document.getElementById("dailyMessage").textContent = "Loaded " + quotes.length + " quotes.";
-  }
+      if (quotes.length === 0) {
+        quoteBox.textContent = "No quotes found.";
+        return;
+      }
 
-  quoteIndex = 0;
-  updateQuote();
-  setInterval(updateQuote, 5000);
-});
-
+      quoteIndex = 0;
+      updateQuote(); // show first quote
+      setInterval(updateQuote, 5000); // rotate every 5 seconds
     });
+  });
+</script>
   });
 </script>
     <!-- Display area -->
