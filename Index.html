@@ -412,7 +412,7 @@ showNextMessage(); // Show first message right away
       quotes = snapshot.docs.map(doc => doc.data().text);
 
       if (quotes.length === 0) {
-        quoteBox.textContent = "No quotes found.";
+        quoteBox.textContent = "QUOTES LENGTH:"quotes.length;
         return;
       }
 
