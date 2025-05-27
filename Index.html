@@ -417,27 +417,34 @@ showNextMessage(); // Show first message right away
   const db = firebase.firestore();
 
   document.addEventListener("DOMContentLoaded", () => {
+     console.log("Quote box is:", quoteBox); 
     const quoteBox = document.getElementById("dailyMessage");
     let quotes = [];
     let quoteIndex = 0;
 
     function updateQuote() {
-      if (quotes.length === 0) return;
-      quoteBox.textContent = quotes[quoteIndex];
-      quoteIndex = (quoteIndex + 1) % quotes.length;
-    }
+  if (quotes.length === 0) {
+    console.log("No quotes to show.");
+    return;
+  }
+  console.log("Displaying:", quotes[quoteIndex]);
+  quoteBox.textContent = quotes[quoteIndex];
+  quoteIndex = (quoteIndex + 1) % quotes.length;
+}
 
-    db.collection("Motivation").onSnapshot(snapshot => {
-      quotes = snapshot.docs.map(doc => doc.data().quote);
+db.collection("Motivation").onSnapshot(snapshot => {
+  quotes = snapshot.docs.map(doc => doc.data().quote);
+  console.log("Quotes loaded from Firestore:", quotes);
 
-      if (quotes.length === 0) {
-        quoteBox.textContent = "QUOTES LENGTH:"quotes.length;
-        return;
-      }
+  if (quotes.length === 0) {
+    quoteBox.textContent = "QUOTES LENGTH: 0";
+    return;
+  }
 
-      quoteIndex = 0;
-      updateQuote(); // show first quote
-      setInterval(updateQuote, 5000); // rotate every 5 seconds
+  quoteIndex = 0;
+  updateQuote(); // Show first quote
+  setInterval(updateQuote, 5000); // Rotate every 5 seconds
+});
     });
   });
 </script>
