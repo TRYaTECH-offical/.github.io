@@ -408,7 +408,7 @@ showNextMessage(); // Show first message right away
       quoteIndex = (quoteIndex + 1) % quotes.length;
     }
 
-    db.collection("motivationQuotes").onSnapshot(snapshot => {
+    db.collection("Motivation").onSnapshot(snapshot => {
       quotes = snapshot.docs.map(doc => doc.data().text);
 
       if (quotes.length === 0) {
