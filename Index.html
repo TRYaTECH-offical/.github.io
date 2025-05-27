@@ -409,7 +409,7 @@ showNextMessage(); // Show first message right away
     }
 
     db.collection("Motivation").onSnapshot(snapshot => {
-      quotes = snapshot.docs.map(doc => doc.data().text);
+      quotes = snapshot.docs.map(doc => doc.data().quote);
 
       if (quotes.length === 0) {
         quoteBox.textContent = "QUOTES LENGTH:"quotes.length;
