@@ -361,13 +361,32 @@ function scrollSlider(trackId, direction) {
 </script>  
     <script>
      <script>
-const messages = [
-  "You got this. Reload daily. Repeat for more. – TRYaTECH",
-  "Mindset matters. Keep going. – TRYaTECH",
-  "Built not bought. Earn it daily. – TRYaTECH",
-  "Dream loud. Move smart. Win big. – TRYaTECH",
-  "Grind mode: ON. – TRYaTECH"
-];
+    const messageElement = document.getElementById("dailyMessage");
+let messages = [];
+let currentIndex = 0;
+
+// Connect to Firestore and fetch quotes
+const db = firebase.firestore();
+db.collection("Motivation").get().then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    if (data.quote) {
+      messages.push(data.quote);
+    }
+  });
+
+  // Start rotating if quotes were loaded
+  if (messages.length > 0) {
+    function showNextMessage() {
+      messageElement.textContent = messages[currentIndex];
+      currentIndex = (currentIndex + 1) % messages.length;
+    }
+
+    showNextMessage();
+    setInterval(showNextMessage, 5000);
+  }
+});
+     
 
 let currentIndex = 0;
 const messageElement = document.getElementById("dailyMessage");
